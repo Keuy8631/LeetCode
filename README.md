@@ -1,2 +1,2 @@
 # LeetCode
-Practcie C and C++
+Practice C and C++
