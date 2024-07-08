@@ -5,16 +5,12 @@ int compress(char* chars, int charsSize) {
         else{
             chars[idx++] = chars[i];
             if(cnt>1){
-                int cntStart = idx;
-                while(cnt>0){
-                    chars[idx++] = '0' + cnt%10;
-                    cnt/=10;
-                }
-                for(int left=cntStart, right=idx-1; left<right; left++, right--){
-                    char tmp = chars[left];
-                    chars[left] = chars[right];
-                    chars[right] = tmp;
-                }
+                int len = snprintf(NULL, 0, "%d", cnt);
+                char* cntStr = (char*)malloc((len + 1) * sizeof(char));
+                snprintf(cntStr, len + 1, "%d", cnt);
+                for (int j = 0; j < len; j++)
+                    chars[idx++] = cntStr[j];
+                free(cntStr);
             }
             cnt = 1;
         }
