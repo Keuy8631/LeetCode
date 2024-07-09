@@ -6,7 +6,6 @@ int longestOnes(int* nums, int numsSize, int k) {
             if(!nums[l]) k++;
             l++;
         }
-        printf("nums[%d]=%d l=%d\n", i, nums[i], l);
         cnt = i-l+1;
     }
     return cnt;
