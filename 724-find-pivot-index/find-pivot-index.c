@@ -6,6 +6,14 @@ int pivotIndex(int* nums, int numsSize) {
     sub[numsSize-1] = nums[numsSize-1];
     for(int i=numsSize-2; i>=0; i--) sub[i] = sub[i+1] + nums[i];
 
-    for(int i=0; i<numsSize; i++) if(prev[i]==sub[i]) return i;
+    for(int i=0; i<numsSize; i++){ 
+        if(prev[i]==sub[i]){
+            free(prev);
+            free(sub);
+            return i;
+        }
+    }
+    free(prev);
+    free(sub);
     return -1;
 }
