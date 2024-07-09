@@ -1,22 +1,50 @@
-int compare(const void *a, const void *b){
-    return *(int*)a-*(int*)b;
+typedef struct{
+    int key;
+    int count;
+    UT_hash_handle hh;
+} HashEntry;
+
+void addEntry(HashEntry **table, int key){
+    HashEntry *entry;
+    HASH_FIND_INT(*table, &key, entry);
+    if(!entry){
+        entry = (HashEntry*)malloc(sizeof(HashEntry));
+        entry->key = key;
+        entry->count = 1;
+        HASH_ADD_INT(*table, key, entry);
+    }
+    else entry->count++;
 }
 
-int maxOperations(int* nums, int numsSize, int k){
-    qsort(nums, numsSize, sizeof(int), compare);
-    for(int i=0; i<numsSize; i++) printf("%d ", nums[i]);
-    printf("\n");
-    int l = 0, r = numsSize-1, cnt = 0;
-    while(l<r){
-        printf("nums[%d]=%d nums[%d]=%d\n", l, nums[l], r, nums[r]);
-        if(nums[l]+nums[r]==k){
-            l++;
-            r--;
-            cnt++;
+bool removeEntry(HashEntry **table, int key){
+    HashEntry *entry;
+    HASH_FIND_INT(*table, &key, entry);
+    if(entry){
+        if(entry->count > 1) entry->count--;
+        else{
+            HASH_DEL(*table, entry);
+            free(entry);
         }
-        else if(nums[l]+nums[r]<k) l++;
-        else if(nums[l]+nums[r]>k) r--;
+        return true;
+    }
+    return false;
+}
+
+int maxOperations(int* nums, int numsSize, int k) {
+    HashEntry *table = NULL;
+    int count = 0;
+    for(int i=0; i<numsSize; i++){
+        int complement = k - nums[i];
+        if(removeEntry(&table, complement)) count++;
+        else addEntry(&table, nums[i]);
     }
 
-    return cnt;
+    // Free hash table
+    HashEntry *current, *tmp;
+    HASH_ITER(hh, table, current, tmp) {
+        HASH_DEL(table, current);
+        free(current);
+    }
+
+    return count;
 }
