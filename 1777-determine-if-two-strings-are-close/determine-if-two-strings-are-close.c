@@ -9,14 +9,11 @@ bool closeStrings(char* word1, char* word2) {
     int *t2 = (int*)calloc(26, sizeof(int));
     for(int i=0; i<n1; i++) t1[word1[i]-'a']++;
     for(int i=0; i<n2; i++) t2[word2[i]-'a']++;
-    for(int i=0; i<26; i++){
-        if((t1[i]&&!t2[i])||(!t1[i]&&t2[i])) return false;
-    }
+    for(int i=0; i<26; i++) if((t1[i]&&!t2[i])||(!t1[i]&&t2[i])) return false;
+
     qsort(t1, 26, sizeof(int), compare);
     qsort(t2, 26, sizeof(int), compare);
-    for(int i=0; i<26; i++){
-        if(t1[i]!=t2[i]) return false;
-    }
+    for(int i=0; i<26; i++) if(t1[i]!=t2[i]) return false;
 
     return true;
 }
