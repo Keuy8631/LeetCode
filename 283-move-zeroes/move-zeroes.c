@@ -1,7 +1,7 @@
 void swap(int *a, int *b){
-    int tmp = *a;
-    *a = *b;
-    *b = tmp;
+    *a^=*b;
+    *b^=*a;
+    *a^=*b;
 }
 
 void moveZeroes(int* nums, int numsSize) {
