@@ -1,6 +1,5 @@
 class TrieNode:
     def __init__(self):
-        self.isWord = False
         self.score = 0
         self.next = {}
 class Trie:
@@ -11,11 +10,8 @@ class Trie:
         for w in word:
             if w not in root.next:
                 root.next[w] = TrieNode()
-            
             root = root.next[w]
             root.score += 1
-        
-        root.isWord = True
         return 
     def get_score(self,word):
         ans = 0
