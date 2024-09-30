@@ -2,22 +2,32 @@ from collections import deque
 class CustomStack:
 
     def __init__(self, maxSize: int):
-        self.size = maxSize
-        self.array = deque()
+        self.array = [0]*maxSize
+        self.inc = [0]*maxSize
+        self.idx = -1
 
     def push(self, x: int) -> None:
-        if len(self.array) == self.size:
+        if self.idx == len(self.array)-1:
             return 
-        self.array.append(x)
+        self.idx+=1
+        self.array[self.idx]=x
+        
 
     def pop(self) -> int:
-        if len(self.array) == 0:
+        
+        if self.idx == -1:
             return -1
-        return self.array.pop()
+        now = self.array[self.idx] +self.inc[self.idx]
+        if self.idx>0:
+            self.inc[self.idx-1]+=self.inc[self.idx]
+        self.inc[self.idx] = 0
+        self.idx-=1
+        return now
 
     def increment(self, k: int, val: int) -> None:
-        for i in range(min(k,len(self.array))):
-            self.array[i]+=val
+        if self.idx!=-1:
+            k = min(k-1,self.idx)
+            self.inc[k] += val
 
 
 # Your CustomStack object will be instantiated and called as such:
